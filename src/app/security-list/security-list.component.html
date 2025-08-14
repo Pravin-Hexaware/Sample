@@ -1,0 +1,119 @@
+<!-- 🔍 Search + ➕ Add Button -->
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div class="flex-grow-1">
+      <input
+        type="text"
+        class="form-control form-control-lg border-dark w-100"
+        placeholder="Search by Name, Symbol, or ISIN"
+        (keyup)="applyFilter($event)" />
+    </div>
+  
+    <button class="btn btn-lg btn-primary d-flex align-items-center" (click)="toggleAddForm()">
+      <i class="bi bi-plus-circle me-1"></i> Add Security
+    </button>
+  </div>
+</div>
+
+<!-- ➕ Add Security Form -->
+<div *ngIf="showAddForm" class="container mb-4">
+  <div class="card shadow-sm">
+    <div class="card-header fw-bold">Add New Security</div>
+    <div class="card-body">
+      <form (ngSubmit)="createSecurity()" #securityForm="ngForm">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Exchange" [(ngModel)]="newSecurity.exchange" name="exchange" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Symbol" [(ngModel)]="newSecurity.symbol" name="symbol" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Name" [(ngModel)]="newSecurity.name" name="name" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="ISIN" [(ngModel)]="newSecurity.isin" name="isin" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Sector" [(ngModel)]="newSecurity.sector" name="sector" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Industry" [(ngModel)]="newSecurity.industry" name="industry" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Currency" [(ngModel)]="newSecurity.currency" name="currency" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Country" [(ngModel)]="newSecurity.country" name="country" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Security Code" [(ngModel)]="newSecurity.securityCode" name="securityCode" required />
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Series" [(ngModel)]="newSecurity.series" name="series" required />
+          </div>
+          <div class="col-md-4">
+            <input type="number" class="form-control" placeholder="Price" [(ngModel)]="newSecurity.price" name="price" required />
+          </div>
+          <div class="col-md-4">
+            <input type="number" class="form-control" placeholder="Asset Class ID" [(ngModel)]="newSecurity.assetClass.id" name="assetClassId" required />
+          </div>
+        </div>
+
+        <div class="mt-4 d-flex gap-3 justify-content-end">
+          <button class="btn btn-success" type="submit" [disabled]="!securityForm.form.valid">Submit</button>
+          <button class="btn btn-danger" type="button" (click)="cancelAdd()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 📊 Securities Table -->
+<div class="container">
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Exchange</th>
+          <th>Symbol</th>
+          <th>Name</th>
+          <th>ISIN</th>
+          <th>Sector</th>
+          <th>Industry</th>
+          <th>Currency</th>
+          <th>Country</th>
+          <th>Security Code</th>
+          <th>Series</th>
+          <th>Price</th>
+          <th>Asset Class ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of dataSource">
+          <td>{{ element.exchange }}</td>
+          <td>{{ element.symbol }}</td>
+          <td>{{ element.name }}</td>
+          <td>{{ element.isin }}</td>
+          <td>{{ element.sector }}</td>
+          <td>{{ element.industry }}</td>
+          <td>{{ element.currency }}</td>
+          <td>{{ element.country }}</td>
+          <td>{{ element.securityCode }}</td>
+          <td>{{ element.series }}</td>
+          <td>{{ element.price }}</td>
+          <td>{{ element.assetClass.id }}</td>
+          <td>
+            <button
+  class="btn btn-sm btn-danger"
+  *ngIf="element.id !== undefined"
+  (click)="deleteSecurity(element.id!)">
+  <i class="bi bi-trash"></i>Delete
+</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

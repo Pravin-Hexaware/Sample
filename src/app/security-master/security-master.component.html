@@ -1,0 +1,141 @@
+<!-- 🔍 Search + ➕ Add Button -->
+<div class="container my-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-body py-3">
+      <div class="row align-items-center g-3">
+        <div class="col-md-8">
+          <input
+            id="searchbar"
+            type="text"
+            class="form-control form-control-lg shadow-sm"
+            placeholder="🔍 Search by Name, Symbol, or ISIN"
+            (keyup)="applyFilter($event)" />
+        </div>
+        <div class="col-md-4 text-end">
+          <button class="btn btn-lg btn-primary shadow-sm" (click)="toggleAddForm()">
+            <i class="bi bi-plus-circle me-1"></i> Add Security
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ➕ Add Security Form -->
+<div *ngIf="showAddForm" class="container mb-4">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Add New Security</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="createSecurity()" #securityForm="ngForm" class="row g-3">
+        <!-- Form Fields -->
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Exchange" [(ngModel)]="newSecurity.exchange" name="exchange" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Symbol" [(ngModel)]="newSecurity.symbol" name="symbol" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Name" [(ngModel)]="newSecurity.name" name="name" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="ISIN" [(ngModel)]="newSecurity.isin" name="isin" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Sector" [(ngModel)]="newSecurity.sector" name="sector" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Industry" [(ngModel)]="newSecurity.industry" name="industry" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Currency" [(ngModel)]="newSecurity.currency" name="currency" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Country" [(ngModel)]="newSecurity.country" name="country" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Security Code" [(ngModel)]="newSecurity.securityCode" name="securityCode" required />
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control shadow-sm" placeholder="Series" [(ngModel)]="newSecurity.series" name="series" required />
+        </div>
+        <div class="col-md-4">
+          <input type="number" class="form-control shadow-sm" placeholder="Price" [(ngModel)]="newSecurity.price" name="price" required />
+        </div>
+        <div class="col-md-4">
+          <input type="number" class="form-control shadow-sm" placeholder="Asset Class ID" [(ngModel)]="newSecurity.assetClass.id" name="assetClassId" required />
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+          <button class="btn btn-success px-4" type="submit" [disabled]="!securityForm.form.valid">Submit</button>
+          <button class="btn btn-outline-secondary px-4" type="button" (click)="cancelAdd()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- 📊 Securities Table -->
+<div class="container mb-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Securities Table</h5>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-light text-center">
+            <tr>
+              <th>Exchange</th>
+              <th>Symbol</th>
+              <th>Name</th>
+              <th>ISIN</th>
+              <th>Sector</th>
+              <th>Industry</th>
+              <th>Currency</th>
+              <th>Country</th>
+              <th>Security Code</th>
+              <th>Series</th>
+              <th>Price</th>
+              <th>Asset Class ID</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <tr *ngFor="let element of securities">
+              <td>{{ element.exchange }}</td>
+              <td>{{ element.symbol }}</td>
+              <td>{{ element.name }}</td>
+              <td>{{ element.isin }}</td>
+              <td>{{ element.sector }}</td>
+              <td>{{ element.industry }}</td>
+              <td>{{ element.currency }}</td>
+              <td>{{ element.country }}</td>
+              <td>{{ element.securityCode }}</td>
+              <td>{{ element.series }}</td>
+              <td>{{ element.price }}</td>
+              <td>{{ element.assetClass.id }}</td>
+              <td>
+                <div class="d-flex justify-content-center gap-2">
+                  <button class="btn btn-sm btn-outline-primary" (click)="editSecurity(element)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" *ngIf="element.id !== undefined" (click)="deleteSecurity(element.id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Angular Material Paginator -->
+      <div class="p-3 border-top bg-light">
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
