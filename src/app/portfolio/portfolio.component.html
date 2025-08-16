@@ -1,0 +1,112 @@
+<div class="container mt-3">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-light bg-light shadow-sm rounded px-3 mb-4">
+    <div class="container-fluid justify-content-between" style="max-width: 100%;">
+      <h3 class="m-0">Portfolio Dashboard</h3>
+      <button class="btn btn-success" (click)="toggleForm()">
+        <i class="bi bi-plus-circle"></i> Add Portfolio
+      </button>
+    </div>
+  </nav>
+
+  <!-- Add / Edit Portfolio Form -->
+  <div *ngIf="showForm" class="card card-body mb-4 shadow-sm">
+    <h4>{{ editMode ? 'Edit Portfolio' : 'Create Portfolio' }}</h4>
+    <form (ngSubmit)="savePortfolio()">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label>Name</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.name" name="name" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Type</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.type" name="type">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Currency</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.currency" name="currency">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Benchmark</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.benchmark" name="benchmark">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Exchange</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.exchange" name="exchange">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Initial Investment</label>
+          <input type="number" class="form-control" [(ngModel)]="selectedPortfolio.initialInvestment" name="initialInvestment">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Current Value</label>
+          <input type="number" class="form-control" [(ngModel)]="selectedPortfolio.currentValue" name="currentValue">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Rebalancing Frequency</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.rebalancingFrequency" name="rebalancingFrequency">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Theme ID</label>
+          <input type="number" class="form-control" [(ngModel)]="selectedPortfolio.theme.id" name="themeId" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label>Status</label>
+          <input type="text" class="form-control" [(ngModel)]="selectedPortfolio.status" name="status">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        {{ editMode ? 'Update Portfolio' : 'Save Portfolio' }}
+      </button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+
+  <!-- Portfolio List -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h4 class="mb-3">Existing Portfolios</h4>
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Currency</th>
+            <th>Theme</th>
+            <th>Initial Investment</th>
+            <th>Current Value</th>
+            <th>Status</th>
+            <th style="width: 160px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of portfolios">
+            <td>{{ p.name }}</td>
+            <td>{{ p.type }}</td>
+            <td>{{ p.currency }}</td>
+            <td>{{ p.theme?.name || p.theme?.id }}</td>
+            <td>{{ p.initialInvestment }}</td>
+            <td>{{ p.currentValue }}</td>
+            <td>{{ p.status }}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-info me-2" (click)="viewHoldings(p.id)">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-warning me-2" (click)="editPortfolio(p)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="deletePortfolio(p.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="portfolios.length === 0">
+            <td colspan="8" class="text-center text-muted">No portfolios available</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
